@@ -16,3 +16,5 @@ const db = mysql.createConnection(
         console.log(err)
       } console.table(results);
   });
+
+  //prompt first, then have query inside. will be wet at first, don't worry
