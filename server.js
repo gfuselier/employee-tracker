@@ -10,3 +10,7 @@ const db = mysql.createConnection(
     },
     console.log(`Connected to the company_db database.`)
   );
+
+  db.query('SELECT * FROM department', function (err, results) {
+    console.log(results);
+  });
