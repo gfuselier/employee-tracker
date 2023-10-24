@@ -39,11 +39,27 @@ const questions = [
             });
         }
         if(answers.action === 'View All Employees') {
-            db.query('SELECT employees.id, first_name, last_name, title, manager_id FROM employees JOIN roles ON employees.role_id = roles.id', (err, results) => {
+            db.query('SELECT employees.id, first_name, last_name, title, name AS department, salary, manager_id FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id', (err, results) => {
                 if(err) {
                   console.log(err)
                 } console.table(results);
             });
+        }
+        if(answers.action === 'Add a Department') {
+            inquirer.prompt([
+                {type: 'input',
+                name: 'addDepartment',
+                message: 'What is the name of the department?'
+            }])
+            .then((ans) => {
+                console.log(ans)
+                db.query('INSERT INTO departments(name) VALUES (?)', ans.addDepartment, (err, results) => {
+                    if(err) {
+                      console.log(err)
+                    } console.log(`Added ${ans.addDepartment} to the database`)
+                });
+                
+            })
         }
     })
 
