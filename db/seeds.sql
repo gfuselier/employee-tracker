@@ -1,3 +1,5 @@
-INSERT INTO departments (id, name)
-VALUES (1, "example1"),
-       (2, "example2"),
+INSERT INTO departments (name)
+VALUES ("production"),
+       ("sales"),
+       ("accounting"),
+       ("human resources");
