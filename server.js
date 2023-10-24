@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
+const cTable = require('console.table');
 
 const db = mysql.createConnection(
     {
@@ -11,10 +12,25 @@ const db = mysql.createConnection(
     console.log(`Connected to the company_db database.`)
   );
 
-  db.query('SELECT * FROM departments', function (err, results) {
-    if(err) {
-        console.log(err)
-      } console.table(results);
-  });
+const questions = [
+    {type: 'list',
+    name: 'action',
+    message: 'What would you like to do?',
+    choices: ['View All Departments', 'View All Roles', 'View All Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update Employee Role', 'Quit']
+    }
+]
 
   //prompt first, then have query inside. will be wet at first, don't worry
+  inquirer.prompt(questions)
+    .then((data) => {
+        console.log(data);
+        if(data.action === 'View All Departments') {
+            db.query('SELECT * FROM departments', function (err, results) {
+                if(err) {
+                    console.log(err)
+                  } console.table(results);
+              });
+        }
+    })
+
+
