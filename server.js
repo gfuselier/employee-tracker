@@ -23,9 +23,23 @@ const questions = [
   //prompt first, then have query inside. will be wet at first, don't worry
   inquirer.prompt(questions)
     .then((answers) => {
-        console.log(answers);
+        // console.log(answers);
         if(answers.action === 'View All Departments') {
             db.query('SELECT * FROM departments', (err, results) => {
+                if(err) {
+                  console.log(err)
+                } console.table(results);
+            });
+        }
+        if(answers.action === 'View All Roles') {
+            db.query('SELECT roles.id, title, name AS department, salary FROM roles JOIN departments ON roles.department_id = departments.id', (err, results) => {
+                if(err) {
+                  console.log(err)
+                } console.table(results);
+            });
+        }
+        if(answers.action === 'View All Employees') {
+            db.query('SELECT employees.id, first_name, last_name, title, manager_id FROM employees JOIN roles ON employees.role_id = roles.id', (err, results) => {
                 if(err) {
                   console.log(err)
                 } console.table(results);
