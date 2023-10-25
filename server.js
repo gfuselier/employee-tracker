@@ -66,12 +66,10 @@ inquirer.prompt(questions)
         }
         if(answers.action === 'Add a Role') {
             db.query('SELECT * FROM departments', function (err, results) {
-                    console.log(results);
                     const depList = results.map((department) => ({
                       name: department.name,
                       value: department.id
                     }))
-                    // console.log(depList)
                     inquirer.prompt([
                         {type: 'input',
                         name: 'addRole',
