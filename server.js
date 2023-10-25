@@ -20,8 +20,11 @@ const questions = [
     }
 ]
 
-  //prompt first, then have query inside. will be wet at first, don't worry
-  inquirer.prompt(questions)
+function askQuestions() {
+    return inquirer.prompt(questions)
+}
+
+  askQuestions() //put in a function that can call itself
     .then((answers) => {
         // console.log(answers);
         if(answers.action === 'View All Departments') {
@@ -29,6 +32,7 @@ const questions = [
                 if(err) {
                   console.log(err)
                 } console.table(results);
+                askQuestions(); //doesn't go through any of the ifs now
             });
         }
         if(answers.action === 'View All Roles') {
@@ -61,7 +65,24 @@ const questions = [
                 
             })
         }
+        if(answers.action === 'Add a Role') {
+            inquirer.prompt([
+                {type: 'input',
+                name: 'addRole',
+                message: 'What is the name of the role?'
+            }])
+            .then((ans) => {
+                console.log(ans)
+                db.query('INSERT INTO departments(name) VALUES (?)', ans.addDepartment, (err, results) => {
+                    if(err) {
+                      console.log(err)
+                    } console.log(`Added ${ans.addDepartment} to the database`)
+                });
+                
+            })
+        }
     })
+
 
 
 // promptAction =()=> {
@@ -74,3 +95,7 @@ const questions = [
 //         }
 //     })
 // };
+
+//can make a query and then inquire.promt inside, then .then another query
+
+//choices takes an array, choices: results.map(student => student.first_name)
