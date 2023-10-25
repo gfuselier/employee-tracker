@@ -83,18 +83,19 @@ inquirer.prompt(questions)
                         message: 'What is the department for the role',
                         name: 'department',
                         choices: depList
-                        }])
-                })
-            
-            // .then((ans) => {
-            //     console.log(ans)
-            //     db.query('INSERT INTO departments(name) VALUES (?)', ans.addDepartment, (err, results) => {
-            //         if(err) {
-            //           console.log(err)
-            //         } console.log(`Added ${ans.addDepartment} to the database`)
-            //     });
-                
-            // })
+                        }
+                    ])
+                    .then((ans) => {
+                        console.log(ans)
+                        const {addRole, salary, department} = ans
+                        db.query('INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)', [addRole, salary, department], (err, results) => {
+                            if(err) {
+                              console.log(err)
+                            } console.log(`Added ${addRole} to the database`)
+                        });
+                        
+                    })
+             })
         }
     })
 
