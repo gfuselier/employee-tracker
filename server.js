@@ -98,4 +98,22 @@ function askQuestions() {
 
 //can make a query and then inquire.promt inside, then .then another query
 
-//choices takes an array, choices: results.map(student => student.first_name)
+// Query database
+// db.query('SELECT * FROM students', function (err, results) {
+//     console.log(results);
+//     const temp = results.map((student) => ({
+//       name: `${student.first_name} ${student.last_name}`,
+//       value: `${student.id}`
+//     }))
+//     inquirer
+//       .prompt([{
+//         type: 'list',
+//         message: 'Which is student do you wish to select?',
+//         name: 'student',
+//         choices: temp
+//       }, ])
+//       .then((response) => console.log(response)
+  
+//       );
+  
+//   });
