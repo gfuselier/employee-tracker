@@ -20,11 +20,10 @@ const questions = [
     }
 ]
 
-function askQuestions() {
-    return inquirer.prompt(questions)
-}
-
-  askQuestions() //put in a function that can call itself
+// function askQuestions() {
+//     return inquirer.prompt(questions)
+// }
+inquirer.prompt(questions)
     .then((answers) => {
         // console.log(answers);
         if(answers.action === 'View All Departments') {
@@ -66,20 +65,38 @@ function askQuestions() {
             })
         }
         if(answers.action === 'Add a Role') {
-            inquirer.prompt([
-                {type: 'input',
-                name: 'addRole',
-                message: 'What is the name of the role?'
-            }])
-            .then((ans) => {
-                console.log(ans)
-                db.query('INSERT INTO departments(name) VALUES (?)', ans.addDepartment, (err, results) => {
-                    if(err) {
-                      console.log(err)
-                    } console.log(`Added ${ans.addDepartment} to the database`)
-                });
+            db.query('SELECT * FROM departments', function (err, results) {
+                    console.log(results);
+                    const depList = results.map((department) => ({
+                      name: department.name,
+                      value: department.id
+                    }))
+                    // console.log(depList)
+                    inquirer.prompt([
+                        {type: 'input',
+                        name: 'addRole',
+                        message: 'What is the name of the role?'
+                        }, 
+                        {type: 'input',
+                        name: 'salary',
+                        message: 'What is the salary for the role?'
+                        }, 
+                        {type: 'list',
+                        message: 'What is the department for the role',
+                        name: 'department',
+                        choices: depList
+                        }])
+                })
+            
+            // .then((ans) => {
+            //     console.log(ans)
+            //     db.query('INSERT INTO departments(name) VALUES (?)', ans.addDepartment, (err, results) => {
+            //         if(err) {
+            //           console.log(err)
+            //         } console.log(`Added ${ans.addDepartment} to the database`)
+            //     });
                 
-            })
+            // })
         }
     })
 
