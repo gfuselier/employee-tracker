@@ -135,6 +135,36 @@ inquirer.prompt(questions)
                     })
              })
         }
+        if(answers.action === 'Update Employee Role') {
+            db.query('SELECT * FROM employees', function (err, results) {
+                    const empList = results.map((employee) => ({
+                        name: `${employee.first_name} ${employee.last_name}`,
+                        value: `${employee.id}`
+                    }))
+                    inquirer.prompt([
+                        {type: 'list',
+                        message: `Which employee's role would you like to update?`,
+                        name: 'employee',
+                        choices: empList
+                        },
+                        {type: 'list',
+                        message: `Which role do you want to assign the selected employee?`,
+                        name: 'role',
+                        choices: roleList
+                        }
+                    ])
+                    .then((ans) => {
+                        console.log(ans)
+                        const {employee, role} = ans
+                        db.query('UPDATE employees SET role_id = "?" WHERE id = ?;', [role, employee], (err, results) => {
+                            if(err) {
+                              console.log(err)
+                            } console.log(`Updated employee's role`)
+                        });
+                        
+                    })
+             })
+        }
     })
 
 
