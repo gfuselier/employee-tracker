@@ -31,7 +31,7 @@ inquirer.prompt(questions)
                 if(err) {
                   console.log(err)
                 } console.table(results);
-                askQuestions(); //doesn't go through any of the ifs now
+                // askQuestions(); //doesn't go through any of the ifs now
             });
         }
         if(answers.action === 'View All Roles') {
@@ -92,6 +92,44 @@ inquirer.prompt(questions)
                             if(err) {
                               console.log(err)
                             } console.log(`Added ${addRole} to the database`)
+                        });
+                        
+                    })
+             })
+        }
+        if(answers.action === 'Add an Employee') {
+            db.query('SELECT id, title FROM roles', function (err, results) {
+                    const roleList = results.map((role) => ({
+                      name: role.title,
+                      value: role.id
+                    }))
+                    inquirer.prompt([
+                        {type: 'input',
+                        name: 'firstName',
+                        message: `What is the employee's first name?`
+                        }, 
+                        {type: 'input',
+                        name: 'lastName',
+                        message: `What is the employee's last name?`
+                        }, 
+                        {type: 'list',
+                        message: `What is the employee's role`,
+                        name: 'role',
+                        choices: roleList
+                        },
+                        {type: 'list',
+                        message: `Who is the employee's manager?`,
+                        name: 'manager',
+                        choices: managerList
+                        }
+                    ])
+                    .then((ans) => {
+                        console.log(ans)
+                        const {firstName, lastName, role, manager} = ans
+                        db.query('INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [firstName, lastName, role, manager], (err, results) => {
+                            if(err) {
+                              console.log(err)
+                            } console.log(`Added ${firstName} ${lastName} to the database`)
                         });
                         
                     })
