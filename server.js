@@ -20,27 +20,26 @@ const questions = [
     }
 ]
 
-function askQuestions() {
-    inquirer.prompt(questions)
-    .then((answers) => {
-        if (answers.action === "Quit") {
-        return;}
-        // } else {
-        // askQuestions();
-        // return answers;
-        // }
-    })
-}
+// function askQuestions() {
+//     inquirer.prompt(questions)
+//     .then((answers) => {
+//         if (answers.action === "Quit") {
+//         return;}
+//          else {
+//         askQuestions();
+//         // return answers;
+//         }
+//     })
+// }
 
 inquirer.prompt(questions)
     .then((answers) => {
-        // console.log(answers);
         if(answers.action === 'View All Departments') {
             db.query('SELECT * FROM departments', (err, results) => {
                 if(err) {
                   console.log(err)
                 } console.table(results);
-                askQuestions();
+                // askQuestions();
             });
         }
         if(answers.action === 'View All Roles') {
@@ -48,7 +47,7 @@ inquirer.prompt(questions)
                 if(err) {
                   console.log(err)
                 } console.table(results);
-                askQuestions();
+                // askQuestions();
             });
         }
         if(answers.action === 'View All Employees') {
@@ -57,7 +56,7 @@ inquirer.prompt(questions)
                 if(err) {
                   console.log(err)
                 } console.table(results);
-                askQuestions();
+                // askQuestions();
             });
         }
         if(answers.action === 'Add a Department') {
@@ -72,7 +71,7 @@ inquirer.prompt(questions)
                     if(err) {
                       console.log(err)
                     } console.log(`Added ${ans.addDepartment} to the database`)
-                    askQuestions();
+                    // askQuestions();
                 });
                 
             })
@@ -105,7 +104,7 @@ inquirer.prompt(questions)
                             if(err) {
                               console.log(err)
                             } console.log(`Added ${addRole} to the database`)
-                            askQuestions();
+                            // askQuestions();
                         });
                         
                     })
@@ -144,7 +143,7 @@ inquirer.prompt(questions)
                             if(err) {
                               console.log(err)
                             } console.log(`Added ${firstName} ${lastName} to the database`)
-                            askQuestions();
+                            // askQuestions();
                         });
                         
                     })
@@ -175,7 +174,7 @@ inquirer.prompt(questions)
                             if(err) {
                               console.log(err)
                             } console.log(`Updated employee's role`)
-                            askQuestions();
+                            // askQuestions();
                         });
                         
                     })
@@ -184,38 +183,3 @@ inquirer.prompt(questions)
         if(answers.action === 'Quit') {
             return;}
     })
-
-
-
-// promptAction =()=> {
-//     return inquirer.prompt(questions)
-//     .then((answers) => {
-//         if (answers.action === "Quit") {
-//         return;
-//         } else {
-//         return promptAction();
-//         }
-//     })
-// };
-
-//can make a query and then inquire.promt inside, then .then another query
-
-// Query database
-// db.query('SELECT * FROM students', function (err, results) {
-//     console.log(results);
-//     const temp = results.map((student) => ({
-//       name: `${student.first_name} ${student.last_name}`,
-//       value: `${student.id}`
-//     }))
-//     inquirer
-//       .prompt([{
-//         type: 'list',
-//         message: 'Which is student do you wish to select?',
-//         name: 'student',
-//         choices: temp
-//       }, ])
-//       .then((response) => console.log(response)
-  
-//       );
-  
-//   });
