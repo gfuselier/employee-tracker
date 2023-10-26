@@ -20,9 +20,18 @@ const questions = [
     }
 ]
 
-// function askQuestions() {
-//     return inquirer.prompt(questions)
-// }
+function askQuestions() {
+    inquirer.prompt(questions)
+    .then((answers) => {
+        if (answers.action === "Quit") {
+        return;}
+        // } else {
+        // askQuestions();
+        // return answers;
+        // }
+    })
+}
+
 inquirer.prompt(questions)
     .then((answers) => {
         // console.log(answers);
@@ -31,7 +40,7 @@ inquirer.prompt(questions)
                 if(err) {
                   console.log(err)
                 } console.table(results);
-                // askQuestions(); //doesn't go through any of the ifs now
+                askQuestions();
             });
         }
         if(answers.action === 'View All Roles') {
@@ -39,13 +48,16 @@ inquirer.prompt(questions)
                 if(err) {
                   console.log(err)
                 } console.table(results);
+                askQuestions();
             });
         }
         if(answers.action === 'View All Employees') {
-            db.query('SELECT employees.id, first_name, last_name, title, name AS department, salary, manager_id FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id', (err, results) => {
+            db.query('SELECT employees.id, first_name, last_name, title, name AS department, salary, manager_id FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id', 
+            (err, results) => {
                 if(err) {
                   console.log(err)
                 } console.table(results);
+                askQuestions();
             });
         }
         if(answers.action === 'Add a Department') {
@@ -60,6 +72,7 @@ inquirer.prompt(questions)
                     if(err) {
                       console.log(err)
                     } console.log(`Added ${ans.addDepartment} to the database`)
+                    askQuestions();
                 });
                 
             })
@@ -92,6 +105,7 @@ inquirer.prompt(questions)
                             if(err) {
                               console.log(err)
                             } console.log(`Added ${addRole} to the database`)
+                            askQuestions();
                         });
                         
                     })
@@ -130,6 +144,7 @@ inquirer.prompt(questions)
                             if(err) {
                               console.log(err)
                             } console.log(`Added ${firstName} ${lastName} to the database`)
+                            askQuestions();
                         });
                         
                     })
@@ -160,11 +175,14 @@ inquirer.prompt(questions)
                             if(err) {
                               console.log(err)
                             } console.log(`Updated employee's role`)
+                            askQuestions();
                         });
                         
                     })
              })
         }
+        if(answers.action === 'Quit') {
+            return;}
     })
 
 
